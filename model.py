@@ -2,7 +2,8 @@ import sugartensor as tf
 
 
 num_blocks = 3     # dilated blocks
-num_dim = 128      # latent dimension
+num_dim = 128/2      # latent dimension
+#num_dim = 128      # latent dimension
 
 
 #

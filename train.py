@@ -27,12 +27,12 @@ data = SpeechCorpus(batch_size=batch_size * tf.sg_gpus())
 inputs = tf.split(data.mfcc, tf.sg_gpus(), axis=0)
 # target sentence label
 labels = tf.split(data.label, tf.sg_gpus(), axis=0)
-
 # sequence length except zero-padding
 seq_len = []
 for input_ in inputs:
     seq_len.append(tf.not_equal(input_.sg_sum(axis=2), 0.).sg_int().sg_sum(axis=1))
-
+# REVERSE!!!
+#inputs, labels = labels, inputs
 
 # parallel loss tower
 @tf.sg_parallel
@@ -45,5 +45,5 @@ def get_loss(opt):
 #
 # train
 #
-tf.sg_train(lr=0.0001, loss=get_loss(input=inputs, target=labels, seq_len=seq_len),
+tf.sg_train(lr=0.00001, loss=get_loss(input=inputs, target=labels, seq_len=seq_len),
             ep_size=data.num_batch, max_ep=50)
